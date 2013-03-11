@@ -60,7 +60,11 @@ that use the API provided by core.
 		   });
 		});
 		*/
-		initialize: 'deck.init'
+		initialize: 'deck.init',
+
+    /* touch specific events */
+    touchNext: 'deck.touch.next',
+    touchPrevious: 'deck.touch.previous'
 	},
 
 	options = {},
@@ -205,11 +209,13 @@ that use the API provided by core.
 				$.each(e.originalEvent.changedTouches, function(i, t) {
 					if (startTouch && t.identifier === startTouch.identifier) {
 						if (t.screenX - startTouch.screenX > tolerance || t.screenY - startTouch.screenY > tolerance) {
-							$[deck]('prev');
+              methods.prev();
+              $d.trigger(events.touchPrevious);
 							startTouch = undefined;
 						}
 						else if (t.screenX - startTouch.screenX < -1 * tolerance || t.screenY - startTouch.screenY < -1 * tolerance) {
-							$[deck]('next');
+              methods.next();
+              $d.trigger(events.touchNext);
 							startTouch = undefined;
 						}
 						return false;
